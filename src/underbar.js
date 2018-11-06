@@ -202,18 +202,20 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    // Create variable to hold result
-    var result;
-    
     // if no accumulator, set accumulator = to first value in collection
-    accumulator = arguments[2] || collection[0];
+    //debugger;
+    var slicedArr = collection.slice(0, collection.length);
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      slicedArr = collection.slice(1);
+    }
     // Iterate through collection on each value with iterator()
-    _.each(collection, function(elem)) {
-      
-    }   
-    
+    for (var i = 0; i < slicedArr.length; i++) {
+      accumulator = iterator(accumulator, slicedArr[i]);
+    }
+       
     // Return result
-    return result;
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
