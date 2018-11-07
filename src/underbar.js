@@ -204,16 +204,31 @@
   _.reduce = function(collection, iterator, accumulator) {
     // if no accumulator, set accumulator = to first value in collection
     //debugger;
-    var slicedArr = collection.slice(0, collection.length);
-    if (accumulator === undefined) {
-      accumulator = collection[0];
-      slicedArr = collection.slice(1);
+    if(Array.isArray(collection)) {
+      var slicedArr = collection.slice(0, collection.length);
+      if (accumulator === undefined) {
+        accumulator = collection[0];
+        slicedArr = collection.slice(1);
+      }
+      // Iterate through collection on each value with iterator()
+      for (var i = 0; i < slicedArr.length; i++) {
+        accumulator = iterator(accumulator, slicedArr[i]);
+      }
+    }else {
+      // Pull out the collection's keys
+      var keys = Object.keys(collection);
+      // First check to see if an accumulator value is passed in
+      if(accumulator === undefined) {
+        accumulator = collection[keys[0]];
+        for(var i = 1; i < keys.length; i++) {
+          accumulator = iterator(accumulator, collection[keys[i]]);
+        }
+      }else {
+        for(var i = 0; i < keys.length; i++) {
+          accumulator = iterator(accumulator, collection[keys[i]]);
+        }
+      }
     }
-    // Iterate through collection on each value with iterator()
-    for (var i = 0; i < slicedArr.length; i++) {
-      accumulator = iterator(accumulator, slicedArr[i]);
-    }
-       
     // Return result
     return accumulator;
   };
@@ -234,6 +249,18 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    return _.reduce(collection, function(accumulator, currentVal) {
+      if (accumulator === false) {
+        return false;  
+      } else if (!iterator) {
+        return currentVal;
+      } else if (iterator(currentVal)) {
+        return true;
+      } else {
+        return false;
+      }
+    }, true);
+    
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
