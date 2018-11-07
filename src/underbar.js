@@ -368,6 +368,23 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // Create an object to hold the cached results for function calls
+    var cache = {};
+    // conditional if cache has a key for func's input,
+    return function() {
+      var funcArr = [];
+      for (var i = 0; i < func.arguments.length; i++) {
+        funcInput.push(func.arguments[i]);
+      }
+      var funcString = funcArr.join(',');
+      
+      if (cache.hasOwnProperty(funcString)) {
+        return cache[funcString];
+      } else {
+        cache[funcString] = func();
+        return func();
+      }
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -377,6 +394,10 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.from(arguments).slice(2);
+    setTimeout(function() {
+      func.apply(null, args);
+    }, wait);
   };
 
 
