@@ -397,6 +397,7 @@
 
       it('should produce the same result as the non-memoized version', function() {
         expect(add(1, 2)).to.equal(3);
+        //debugger;
         expect(memoAdd(1, 2)).to.equal(3);
       });
 

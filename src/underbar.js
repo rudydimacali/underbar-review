@@ -368,21 +368,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    // Create an object to hold the cached results for function calls
     var cache = {};
-    // conditional if cache has a key for func's input,
     return function() {
-      var funcArr = [];
-      for (var i = 0; i < func.arguments.length; i++) {
-        funcInput.push(func.arguments[i]);
-      }
-      var funcString = funcArr.join(',');
-      
-      if (cache.hasOwnProperty(funcString)) {
-        return cache[funcString];
+      var args = JSON.stringify(Array.from(arguments));
+      if (cache.hasOwnProperty(args)) {
+        return cache[args];
       } else {
-        cache[funcString] = func();
-        return func();
+        cache[args] = func.apply(null, arguments);
+        return cache[args];
       }
     };
   };
@@ -412,6 +405,10 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    //create a new array from the sliced first half of input
+    var copyArr = array.slice();
+    
+    
   };
 
 
