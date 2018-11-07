@@ -407,8 +407,14 @@
   _.shuffle = function(array) {
     //create a new array from the sliced first half of input
     var copyArr = array.slice();
-    
-    
+    var shuffledArr = [];
+
+    for (var i = 0; i < array.length; i++) {
+      var randIndex = Math.floor(Math.random() * ((copyArr.length - 1) - 0 + 1)) + 0;
+      shuffledArr.push(copyArr[randIndex]);
+      copyArr.splice(randIndex, 1);
+    }
+    return shuffledArr;
   };
 
 
